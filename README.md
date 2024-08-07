@@ -24,7 +24,7 @@ Esta es una API para el CRUD y búsqueda de alumnos, desarrollada con NestJS y d
 3. Configurar las variables de entorno:
    Crear un archivo `.env` en la raíz del proyecto con el siguiente contenido:
    ```
-   API_KEY=tu_api_key_secreta
+   API_KEY=api_key_secreta
    ```
 
 4. Configurar el parámetro SSM en AWS:
@@ -71,4 +71,4 @@ La documentación de la API (Swagger) estará disponible en `/api` una vez que l
 ## Notas importantes
 
 - Asegúrate de no exponer las credenciales de AWS en el código o en el repositorio.
-- La API utiliza una API Key para la autenticación. Asegúrate de incluir el header `x-api-key` en todas las solicitudes.
+- La API utiliza una API Key para la autenticación. Incluir el header `x-api-key` en todas las solicitudes.
