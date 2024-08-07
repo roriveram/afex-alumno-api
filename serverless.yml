@@ -1,0 +1,74 @@
+service: afex-alumno-api
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  stage: ${opt:stage, 'dev'}
+  region: us-east-2
+  environment:
+    API_KEY: ${ssm:/afex-alumno-api/${self:provider.stage}/api-key}
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - dynamodb:Query
+            - dynamodb:Scan
+            - dynamodb:GetItem
+            - dynamodb:PutItem
+            - dynamodb:UpdateItem
+            - dynamodb:DeleteItem
+          Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:custom.tableName}
+        - Effect: Allow
+          Action:
+            - ssm:GetParameter
+          Resource: arn:aws:ssm:${self:provider.region}:*:parameter/afex-alumno-api/${self:provider.stage}/*
+  tags:
+    Environment: ${self:provider.stage}
+    Project: AfexAlumnoAPI
+
+package:
+  individually: true
+  patterns:
+    - '!node_modules/**'
+    - '!src/**'
+    - 'dist/**'
+
+functions:
+  api:
+    name: ${self:service}-${self:provider.stage}-api
+    handler: dist/main.handler
+    events:
+      - http:
+          method: ANY
+          path: /
+          cors: true
+      - http:
+          method: ANY
+          path: '{proxy+}'
+          cors: true
+
+resources:
+  Resources:
+    AlumnosTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.tableName}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+custom:
+  tableName: AlumnosTable-${self:provider.stage}
+  serverless-offline:
+    httpPort: 3000
+  serverlessPluginTypescript:
+    tsConfigFileLocation: './tsconfig.json'    
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-offline
