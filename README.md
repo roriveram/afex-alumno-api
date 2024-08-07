@@ -29,7 +29,7 @@ Esta es una API para el CRUD y búsqueda de alumnos, desarrollada con NestJS y d
 
 4. Configurar el parámetro SSM en AWS:
    ```
-   aws ssm put-parameter --name "/afex-alumno-api/dev/api-key" --value "tu_api_key_secreta" --type SecureString
+   aws ssm put-parameter --name "/afex-alumno-api/dev/api-key" --value "api_key_secreta" --type SecureString
    ```
 
 ## Desarrollo local
