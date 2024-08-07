@@ -12,7 +12,7 @@ Esta es una API para el CRUD y búsqueda de alumnos, desarrollada con NestJS y d
 
 1. Clonar el repositorio:
    ```
-   git clone <URL_DEL_REPOSITORIO>
+   git clone https://github.com/roriveram/afex-alumno-api
    cd afex-alumno-api
    ```
 
