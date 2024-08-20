@@ -15,8 +15,10 @@ const aws_sdk_1 = require("aws-sdk");
 const uuid_1 = require("uuid");
 let AlumnosService = class AlumnosService {
     constructor() {
-        this.tableName = 'AlumnosTable';
-        this.dynamoDB = new aws_sdk_1.DynamoDB.DocumentClient();
+        this.tableName = 'AlumnosTable-dev';
+        this.dynamoDB = new aws_sdk_1.DynamoDB.DocumentClient({
+            region: 'us-east-2',
+        });
     }
     async create(createAlumnoDto) {
         const alumno = Object.assign({ id: (0, uuid_1.v4)() }, createAlumnoDto);
@@ -27,7 +29,8 @@ let AlumnosService = class AlumnosService {
             }).promise();
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error al crear el alumno');
+            console.error('Error al crear alumno:', error);
+            throw new common_1.InternalServerErrorException(`Error al crear el alumno: ${error.message}`);
         }
         return alumno;
     }
@@ -39,7 +42,8 @@ let AlumnosService = class AlumnosService {
             return result.Items;
         }
         catch (error) {
-            throw new common_1.InternalServerErrorException('Error al obtener los alumnos');
+            console.error('Error al obtener alumnos:', error);
+            throw new common_1.InternalServerErrorException(`Error al obtener los alumnos: ${error.message}`);
         }
     }
     async findOne(id) {
@@ -121,9 +125,9 @@ let AlumnosService = class AlumnosService {
         }
     }
 };
-exports.AlumnosService = AlumnosService;
-exports.AlumnosService = AlumnosService = __decorate([
+AlumnosService = __decorate([
     (0, common_1.Injectable)(),
     __metadata("design:paramtypes", [])
 ], AlumnosService);
+exports.AlumnosService = AlumnosService;
 //# sourceMappingURL=alumnos.service.js.map

@@ -2,14 +2,21 @@ import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import serverlessExpress from '@vendia/serverless-express';
+//import serverlessExpress from '@vendia/serverless-express';
+import { configure as serverlessExpress } from '@vendia/serverless-express';
 import { Callback, Context, Handler } from 'aws-lambda';
 
 let server: Handler;
 
 async function bootstrap(): Promise<Handler> {
-  const app = await NestFactory.create(AppModule);
-  app.enableCors();
+  const app = await NestFactory.create(AppModule, {
+    logger: ['error', 'warn', 'debug', 'log', 'verbose'],
+  });
+  app.enableCors({
+    origin: '*', // En producción, especifica los orígenes permitidos
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type,Authorization',
+  });
   app.useGlobalPipes(new ValidationPipe());
 
   const config = new DocumentBuilder()

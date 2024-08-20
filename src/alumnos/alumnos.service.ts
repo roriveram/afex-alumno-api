@@ -8,10 +8,12 @@ import { UpdateAlumnoDto } from './dto/update-alumno.dto';
 @Injectable()
 export class AlumnosService {
   private dynamoDB: DynamoDB.DocumentClient;
-  private readonly tableName = 'AlumnosTable';
+  private readonly tableName = 'AlumnosTable-dev';
 
   constructor() {
-    this.dynamoDB = new DynamoDB.DocumentClient();
+    this.dynamoDB = new DynamoDB.DocumentClient({
+      region: 'us-east-2',
+    });
   }
 
   async create(createAlumnoDto: CreateAlumnoDto): Promise<Alumno> {
@@ -26,7 +28,8 @@ export class AlumnosService {
         Item: alumno,
       }).promise();
     } catch (error) {
-      throw new InternalServerErrorException('Error al crear el alumno');
+      console.error('Error al crear alumno:', error);
+      throw new InternalServerErrorException(`Error al crear el alumno: ${error.message}`);
     }
 
     return alumno;
@@ -39,7 +42,8 @@ export class AlumnosService {
       }).promise();
       return result.Items as Alumno[];
     } catch (error) {
-      throw new InternalServerErrorException('Error al obtener los alumnos');
+      console.error('Error al obtener alumnos:', error);
+      throw new InternalServerErrorException(`Error al obtener los alumnos: ${error.message}`);
     }
   }
 

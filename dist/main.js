@@ -8,8 +8,14 @@ const app_module_1 = require("./app.module");
 const serverless_express_1 = require("@vendia/serverless-express");
 let server;
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(app_module_1.AppModule);
-    app.enableCors();
+    const app = await core_1.NestFactory.create(app_module_1.AppModule, {
+        logger: ['error', 'warn', 'debug', 'log', 'verbose'],
+    });
+    app.enableCors({
+        origin: '*',
+        methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+        allowedHeaders: 'Content-Type,Authorization',
+    });
     app.useGlobalPipes(new common_1.ValidationPipe());
     const config = new swagger_1.DocumentBuilder()
         .setTitle('Alumnos API')
@@ -21,7 +27,7 @@ async function bootstrap() {
     swagger_1.SwaggerModule.setup('api', app, document);
     await app.init();
     const expressApp = app.getHttpAdapter().getInstance();
-    return (0, serverless_express_1.default)({ app: expressApp });
+    return (0, serverless_express_1.configure)({ app: expressApp });
 }
 const handler = async (event, context, callback) => {
     server = server !== null && server !== void 0 ? server : (await bootstrap());

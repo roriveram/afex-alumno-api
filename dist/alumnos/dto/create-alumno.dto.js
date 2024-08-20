@@ -14,7 +14,6 @@ const class_validator_1 = require("class-validator");
 const swagger_1 = require("@nestjs/swagger");
 class CreateAlumnoDto {
 }
-exports.CreateAlumnoDto = CreateAlumnoDto;
 __decorate([
     (0, swagger_1.ApiProperty)({ example: 'Juan', description: 'Nombre del alumno' }),
     (0, class_validator_1.IsString)(),
@@ -44,4 +43,5 @@ __decorate([
     (0, class_validator_1.Length)(2, 20),
     __metadata("design:type", String)
 ], CreateAlumnoDto.prototype, "curso", void 0);
+exports.CreateAlumnoDto = CreateAlumnoDto;
 //# sourceMappingURL=create-alumno.dto.js.map

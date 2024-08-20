@@ -13,7 +13,6 @@ exports.Alumno = void 0;
 const class_validator_1 = require("class-validator");
 class Alumno {
 }
-exports.Alumno = Alumno;
 __decorate([
     (0, class_validator_1.IsUUID)(),
     __metadata("design:type", String)
@@ -34,4 +33,5 @@ __decorate([
     (0, class_validator_1.IsString)(),
     __metadata("design:type", String)
 ], Alumno.prototype, "curso", void 0);
+exports.Alumno = Alumno;
 //# sourceMappingURL=alumno.model.js.map

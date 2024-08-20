@@ -43,7 +43,6 @@ let AlumnosController = class AlumnosController {
         return this.alumnosService.remove(id);
     }
 };
-exports.AlumnosController = AlumnosController;
 __decorate([
     (0, common_1.Post)(),
     (0, swagger_1.ApiOperation)({ summary: 'Crear un nuevo alumno' }),
@@ -98,11 +97,12 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AlumnosController.prototype, "remove", null);
-exports.AlumnosController = AlumnosController = __decorate([
+AlumnosController = __decorate([
     (0, swagger_1.ApiTags)('alumnos'),
     (0, common_1.Controller)('alumnos'),
     (0, common_1.UseGuards)(api_key_guard_1.ApiKeyGuard),
     (0, swagger_1.ApiBearerAuth)(),
     __metadata("design:paramtypes", [alumnos_service_1.AlumnosService])
 ], AlumnosController);
+exports.AlumnosController = AlumnosController;
 //# sourceMappingURL=alumnos.controller.js.map

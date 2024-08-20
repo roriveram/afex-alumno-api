@@ -15,8 +15,8 @@ let ApiKeyGuard = class ApiKeyGuard {
         return apiKey === process.env.API_KEY;
     }
 };
-exports.ApiKeyGuard = ApiKeyGuard;
-exports.ApiKeyGuard = ApiKeyGuard = __decorate([
+ApiKeyGuard = __decorate([
     (0, common_1.Injectable)()
 ], ApiKeyGuard);
+exports.ApiKeyGuard = ApiKeyGuard;
 //# sourceMappingURL=api-key.guard.js.map

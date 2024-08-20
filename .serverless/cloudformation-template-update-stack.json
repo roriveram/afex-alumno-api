@@ -181,7 +181,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/afex-alumno-api/dev/1723029293042-2024-08-07T11:14:53.042Z/api.zip"
+          "S3Key": "serverless/afex-alumno-api/dev/1724149830227-2024-08-20T10:30:30.227Z/api.zip"
         },
         "Handler": "dist/main.handler",
         "Runtime": "nodejs18.x",
@@ -200,7 +200,8 @@
         ],
         "Environment": {
           "Variables": {
-            "API_KEY": "AKIA6GBME5RMPGZJDE44"
+            "API_KEY": "AKIA6GBME5RMPGZJDE44",
+            "DYNAMODB_TABLE": "AlumnosTable-dev-dev"
           }
         },
         "Role": {
@@ -214,14 +215,14 @@
         "ApiLogGroup"
       ]
     },
-    "ApiLambdaVersionVEvvt823qSaGEDv1kv7ByyXoYu0wxjdsbh47ovQ90CM": {
+    "ApiLambdaVersionZLdbqKM9SXddvK5FTZaswBUvzHYqeEIFfjaYGVQ": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ApiLambdaFunction"
         },
-        "CodeSha256": "UsQj8mz+pcHPYIDFalWmxSOFbbiQDfyDQUiDOVBN7PA="
+        "CodeSha256": "9m8b/bR7yxsHtgtRAxGHXxh1g4/1uCyt62NslXMXE2Q="
       }
     },
     "ApiGatewayRestApi": {
@@ -244,6 +245,33 @@
             "ApiGatewayRestApi",
             "RootResourceId"
           ]
+        },
+        "PathPart": "{proxy+}",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceApi": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "api",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
+      }
+    },
+    "ApiGatewayResourceApiProxyVar": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Ref": "ApiGatewayResourceApi"
         },
         "PathPart": "{proxy+}",
         "RestApiId": {
@@ -439,7 +467,99 @@
         "ApiLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1723029084028": {
+    "ApiGatewayMethodApiGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceApi"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "ApiLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayMethodApiProxyVarGet": {
+      "Type": "AWS::ApiGateway::Method",
+      "Properties": {
+        "HttpMethod": "GET",
+        "RequestParameters": {},
+        "ResourceId": {
+          "Ref": "ApiGatewayResourceApiProxyVar"
+        },
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        },
+        "ApiKeyRequired": false,
+        "AuthorizationType": "NONE",
+        "Integration": {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": {
+            "Fn::Join": [
+              "",
+              [
+                "arn:",
+                {
+                  "Ref": "AWS::Partition"
+                },
+                ":apigateway:",
+                {
+                  "Ref": "AWS::Region"
+                },
+                ":lambda:path/2015-03-31/functions/",
+                {
+                  "Fn::GetAtt": [
+                    "ApiLambdaFunction",
+                    "Arn"
+                  ]
+                },
+                "/invocations"
+              ]
+            ]
+          }
+        },
+        "MethodResponses": []
+      },
+      "DependsOn": [
+        "ApiLambdaPermissionApiGateway"
+      ]
+    },
+    "ApiGatewayDeployment1724149626225": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -451,7 +571,9 @@
         "ApiGatewayMethodOptions",
         "ApiGatewayMethodProxyVarOptions",
         "ApiGatewayMethodAny",
-        "ApiGatewayMethodProxyVarAny"
+        "ApiGatewayMethodProxyVarAny",
+        "ApiGatewayMethodApiGet",
+        "ApiGatewayMethodApiProxyVarGet"
       ]
     },
     "ApiLambdaPermissionApiGateway": {
@@ -523,7 +645,7 @@
     "ApiLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ApiLambdaVersionVEvvt823qSaGEDv1kv7ByyXoYu0wxjdsbh47ovQ90CM"
+        "Ref": "ApiLambdaVersionZLdbqKM9SXddvK5FTZaswBUvzHYqeEIFfjaYGVQ"
       },
       "Export": {
         "Name": "sls-afex-alumno-api-dev-ApiLambdaFunctionQualifiedArn"

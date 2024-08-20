@@ -12,12 +12,12 @@ const alumnos_controller_1 = require("./alumnos/alumnos.controller");
 const alumnos_service_1 = require("./alumnos/alumnos.service");
 let AppModule = class AppModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+AppModule = __decorate([
     (0, common_1.Module)({
         imports: [],
         controllers: [alumnos_controller_1.AlumnosController],
         providers: [alumnos_service_1.AlumnosService],
     })
 ], AppModule);
+exports.AppModule = AppModule;
 //# sourceMappingURL=app.module.js.map

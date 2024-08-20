@@ -7,6 +7,7 @@ provider:
   region: us-east-2
   environment:
     API_KEY: ${ssm:/afex-alumno-api/${self:provider.stage}/api-key}
+    DYNAMODB_TABLE: ${self:custom.tableName}-${self:provider.stage}
   iam:
     role:
       statements:
@@ -29,10 +30,18 @@ provider:
 
 package:
   individually: true
-  patterns:
-    - '!node_modules/**'
-    - '!src/**'
-    - 'dist/**'
+  exclude:
+    - node_modules/**
+  include:
+    - dist/**
+    - node_modules/@nestjs/**
+    - node_modules/@vendia/**
+    - node_modules/reflect-metadata/**
+    - node_modules/rxjs/**
+    - node_modules/tslib/**
+    - node_modules/uid/**
+    - node_modules/iterare/**
+    - node_modules/fast-safe-stringify/**
 
 functions:
   api:
@@ -47,6 +56,12 @@ functions:
           method: ANY
           path: '{proxy+}'
           cors: true
+      - http:
+          method: GET
+          path: api
+      - http:
+          method: GET
+          path: api/{proxy+}
 
 resources:
   Resources:
@@ -72,3 +87,4 @@ custom:
 plugins:
   - serverless-plugin-typescript
   - serverless-offline
+  - serverless-plugin-include-dependencies
